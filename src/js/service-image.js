@@ -31,7 +31,7 @@ class ServiceImage {
         Notiflix.Notify.success(`Hooray! We found ${this.hits} images.`)
       } 
     } catch (error) {
-      if (this.page * this.perPage > this.hits ?? 10000) {
+      if (this.page * this.perPage > this.hits) {
         throw new Error("We're sorry, but you've reached the end of search results.");
       }
 

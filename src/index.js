@@ -27,6 +27,7 @@ async function onSearch(evt) {
   const hits = await loadImages();
 
   refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
+  setSmoothScroll();
   lightbox.refresh();
   refs.loadBtn.classList.remove("hidden");
 }
@@ -52,4 +53,15 @@ async function loadImages() {
 
   serviceImage.nextPage();
   return hits;
+}
+
+function setSmoothScroll() {
+  const { height: cardHeight } = document
+    .querySelector(".gallery")
+    .firstElementChild.getBoundingClientRect();
+
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: "smooth",
+  });
 }
