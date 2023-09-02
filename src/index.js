@@ -9,6 +9,7 @@ const refs = {
   loadBtn: document.querySelector('.load-more'),
 }
 
+refs.loadBtn.style.display = "none";
 refs.form.addEventListener('submit', onSearch);
 refs.loadBtn.addEventListener('click', onLoadMore);
 
@@ -18,10 +19,14 @@ let querry = "";
 
 async function onSearch(evt) {
   evt.preventDefault();
+  if (evt.currentTarget.elements.searchQuery.value === querry) {
+    Notiflix.Notify.failure(`Querry ${querry} had been already declared. Enter something else...`);
+    return;
+  }
 
   refs.gallery.innerHTML = '';
   serviceImage.resetPage();
-  refs.loadBtn.classList.add("hidden");
+  refs.loadBtn.style.display = "none";
   
   querry = evt.currentTarget.elements.searchQuery.value;
   const hits = await loadImages();
@@ -29,7 +34,7 @@ async function onSearch(evt) {
   refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
   setSmoothScroll();
   lightbox.refresh();
-  refs.loadBtn.classList.remove("hidden");
+  refs.loadBtn.style.display = "block";
 }
 
 async function onLoadMore() {
@@ -44,9 +49,6 @@ async function loadImages() {
   try {
     hits = await serviceImage.fetchImage(querry);
 
-    if (hits.length === 0) {
-      throw new Error("Sorry, there are no images matching your search query. Please try again.");
-    }
   } catch (error) {    
     Notiflix.Notify.failure(error.message);
   }

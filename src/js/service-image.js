@@ -25,19 +25,23 @@ class ServiceImage {
     let response = null;
     try {
       response = await axios(`${this.API_URL}?${params}`);
-      if (!this.setHits) {
+      if (!this.setHits && response.data.hits.length) {
         this.hits = response.data.totalHits;
         this.setHits = true;
-        Notiflix.Notify.success(`Hooray! We found ${this.hits} images.`)
+        Notiflix.Notify.success(`Hooray! We found ${this.hits} images.`);
       } 
     } catch (error) {
       if (this.page * this.perPage > this.hits) {
         throw new Error("We're sorry, but you've reached the end of search results.");
       }
-
+      
       throw error;
     }
-
+    
+    if (!response.data.hits.length) {
+      throw new Error("Sorry, there are no images matching your search query. Please try again.")
+    }
+      
     return response.data.hits;
   }
 
