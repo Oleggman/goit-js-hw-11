@@ -1,5 +1,6 @@
 import Notiflix from "notiflix";
 import ServiceImage from "./js/service-image";
+import SimpleLightbox from "simplelightbox";
 import { renderGallery } from "./js/render-gallery";
 
 const refs = {
@@ -11,6 +12,7 @@ const refs = {
 refs.form.addEventListener('submit', onSearch);
 refs.loadBtn.addEventListener('click', onLoadMore);
 
+var lightbox = new SimpleLightbox('.gallery a');
 const serviceImage = new ServiceImage();
 let querry = "";
 
@@ -25,6 +27,7 @@ async function onSearch(evt) {
   const hits = await loadImages();
 
   refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
+  lightbox.refresh();
   refs.loadBtn.classList.remove("hidden");
 }
 
@@ -32,6 +35,7 @@ async function onLoadMore() {
   const hits = await loadImages();
 
   refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
+  lightbox.refresh();
 }
 
 async function loadImages() {

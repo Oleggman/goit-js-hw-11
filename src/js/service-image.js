@@ -7,7 +7,7 @@ class ServiceImage {
     this.API_KEY = '39209629-f3132ec928ad5cd36f2b712c3';
     this.page = 1;
     this.perPage = 40;
-    this.hits = 0;
+    this.hits = null;
     this.setHits = false;
   }
 
@@ -31,7 +31,7 @@ class ServiceImage {
         Notiflix.Notify.success(`Hooray! We found ${this.hits} images.`)
       } 
     } catch (error) {
-      if (this.page * this.perPage > this.hits) {
+      if (this.page * this.perPage > this.hits ?? 10000) {
         throw new Error("We're sorry, but you've reached the end of search results.");
       }
 
