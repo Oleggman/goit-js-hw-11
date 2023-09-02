@@ -1,10 +1,14 @@
 import axios from "axios";
+import Notiflix from "notiflix";
 
 class ServiceImage {
   constructor() {
     this.API_URL = 'https://pixabay.com/api';
     this.API_KEY = '39209629-f3132ec928ad5cd36f2b712c3';
     this.page = 1;
+    this.perPage = 40;
+    this.hits = 0;
+    this.setHits = false;
   }
 
   async fetchImage(querry) {
@@ -15,23 +19,25 @@ class ServiceImage {
       orientation: "horizontal",
       safesearch: true,
       page: this.page,
-      per_page: 40
+      per_page: this.perPage,
     });
 
-    // let response = null;
-    // try {
-    //   response = await axios(`${this.API_URL}?${params}`);
-    //   console.log(response)
-    // } catch (error) {
-    //   if (this.page * 200 > response.totalHits) {
-    //     throw new Error("We're sorry, but you've reached the end of search results.");
-    //   }
-      
-    //   throw error;
-    // } 
-    
-    const response = await axios(`${this.API_URL}?${params}`);
-    
+    let response = null;
+    try {
+      response = await axios(`${this.API_URL}?${params}`);
+      if (!this.setHits) {
+        this.hits = response.data.totalHits;
+        this.setHits = true;
+        Notiflix.Notify.success(`Hooray! We found ${this.hits} images.`)
+      } 
+    } catch (error) {
+      if (this.page * this.perPage > this.hits) {
+        throw new Error("We're sorry, but you've reached the end of search results.");
+      }
+
+      throw error;
+    }
+
     return response.data.hits;
   }
 
@@ -41,6 +47,8 @@ class ServiceImage {
 
   resetPage() {
     this.page = 1;
+    this.setHits = false;
+    this.hits = 0;
   }
 }
 

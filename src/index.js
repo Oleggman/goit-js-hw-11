@@ -42,7 +42,7 @@ async function loadImages() {
     if (hits.length === 0) {
       throw new Error("Sorry, there are no images matching your search query. Please try again.");
     }
-  } catch (error) {
+  } catch (error) {    
     Notiflix.Notify.failure(error.message);
   }
 
