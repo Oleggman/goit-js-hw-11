@@ -18,7 +18,20 @@ class ServiceImage {
       per_page: 40
     });
 
+    // let response = null;
+    // try {
+    //   response = await axios(`${this.API_URL}?${params}`);
+    //   console.log(response)
+    // } catch (error) {
+    //   if (this.page * 200 > response.totalHits) {
+    //     throw new Error("We're sorry, but you've reached the end of search results.");
+    //   }
+      
+    //   throw error;
+    // } 
+    
     const response = await axios(`${this.API_URL}?${params}`);
+    
     return response.data.hits;
   }
 

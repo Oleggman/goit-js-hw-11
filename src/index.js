@@ -16,10 +16,12 @@ let querry = "";
 
 async function onSearch(evt) {
   evt.preventDefault();
+
   refs.gallery.innerHTML = '';
   serviceImage.resetPage();
-  querry = evt.currentTarget.elements.searchQuery.value;
+  refs.loadBtn.classList.add("hidden");
   
+  querry = evt.currentTarget.elements.searchQuery.value;
   const hits = await loadImages();
 
   refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
