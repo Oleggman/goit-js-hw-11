@@ -5,19 +5,37 @@ import { renderGallery } from "./js/render-gallery";
 const refs = {
   form: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
+  loadBtn: document.querySelector('.load-more'),
 }
 
 refs.form.addEventListener('submit', onSearch);
+refs.loadBtn.addEventListener('click', onLoadMore);
+
 const serviceImage = new ServiceImage();
+let querry = "";
 
 async function onSearch(evt) {
   evt.preventDefault();
   refs.gallery.innerHTML = '';
-  const value = evt.currentTarget.elements.searchQuery.value;
-  let hits = null;
+  serviceImage.resetPage();
+  querry = evt.currentTarget.elements.searchQuery.value;
   
+  const hits = await loadImages();
+
+  refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
+  refs.loadBtn.classList.remove("hidden");
+}
+
+async function onLoadMore() {
+  const hits = await loadImages();
+
+  refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
+}
+
+async function loadImages() {
+  let hits = null;
   try {
-    hits = await serviceImage.fetchImage(value);
+    hits = await serviceImage.fetchImage(querry);
 
     if (hits.length === 0) {
       throw new Error("Sorry, there are no images matching your search query. Please try again.");
@@ -26,5 +44,6 @@ async function onSearch(evt) {
     Notiflix.Notify.failure(error.message);
   }
 
-  refs.gallery.innerHTML = renderGallery(hits);
+  serviceImage.nextPage();
+  return hits;
 }
