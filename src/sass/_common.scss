@@ -16,10 +16,10 @@ body {
   height: 100px;
   width: 100%;
   position: fixed;
+  z-index: 100;
   top: 0;
   background: linear-gradient(to right, red, purple);
-  z-index: 100;
-box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 .search-form input {
