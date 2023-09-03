@@ -17,7 +17,9 @@ body {
   width: 100%;
   position: fixed;
   top: 0;
-  background-color: tomato;
+  background: linear-gradient(to right, red, purple);
+  z-index: 100;
+box-shadow: 0 4px 4px rgba(0, 0, 0, 0.4);
 }
 
 .search-form input {
@@ -47,17 +49,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  gap: 15px;
   flex-wrap: wrap;
   margin-bottom: 30px;
 }
 
 .photo-card {
   width: 350px;
-  height: 350px;
-  border: 1px solid black;
+  height: 320px;
   background-color: #c8dcff;
   border-radius: 3px;
+  cursor: pointer;
+  transition: transform 250ms;
+  box-shadow: -5px 8px 13px -5px rgba(0, 0, 0, 0.57);
+  -webkit-box-shadow: -5px 8px 13px -5px rgba(0, 0, 0, 0.57);
+  -moz-box-shadow: -5px 8px 13px -5px rgba(0, 0, 0, 0.57);
+}
+
+.photo-card:hover {
+  transform: scale(105%);
 }
 
 .photo-card a {
@@ -82,13 +92,8 @@ body {
   align-items: center;
   justify-content: center;
 
-  font-style: 20px;
-    color: #E91E63;
-    text-shadow: rgb(255, 0, 85) 1px 0 10px;
-    ;
-}
-
-.load-more {
-  display: block;
-  margin: 0 auto;
+  gap: 5px;
+  font-style: 16px;
+  color: #E91E63;
+  text-shadow: rgb(255, 0, 85) 1px 0 10px;
 }

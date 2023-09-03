@@ -6,16 +6,19 @@ import { renderGallery } from "./js/render-gallery";
 const refs = {
   form: document.querySelector('.search-form'),
   gallery: document.querySelector('.gallery'),
-  loadBtn: document.querySelector('.load-more'),
+  guard: document.querySelector('.js-guard')
 }
 
-refs.loadBtn.style.display = "none";
 refs.form.addEventListener('submit', onSearch);
-refs.loadBtn.addEventListener('click', onLoadMore);
 
 var lightbox = new SimpleLightbox('.gallery a');
 const serviceImage = new ServiceImage();
 let querry = "";
+
+const options = {
+  rootMargin: "300px",
+}
+const observer = new IntersectionObserver(onLoadMore, options);
 
 async function onSearch(evt) {
   evt.preventDefault();
@@ -26,7 +29,6 @@ async function onSearch(evt) {
 
   refs.gallery.innerHTML = '';
   serviceImage.resetPage();
-  refs.loadBtn.style.display = "none";
   
   querry = evt.currentTarget.elements.searchQuery.value;
   const hits = await loadImages();
@@ -34,7 +36,7 @@ async function onSearch(evt) {
   refs.gallery.insertAdjacentHTML('beforeend', renderGallery(hits));
   setSmoothScroll();
   lightbox.refresh();
-  refs.loadBtn.style.display = "block";
+  observer.observe(refs.guard);
 }
 
 async function onLoadMore() {
@@ -51,6 +53,8 @@ async function loadImages() {
 
   } catch (error) {    
     Notiflix.Notify.failure(error.message);
+    querry = "";
+    observer.unobserve(refs.guard);
   }
 
   serviceImage.nextPage();
